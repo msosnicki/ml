@@ -39,8 +39,8 @@ Theta2_grad = zeros(size(Theta2));
 %         cost function computation is correct by verifying the cost
 %         computed in ex4.m
 
-X = [ones(m, 1) X];
-Z2 = X * Theta1';
+A1 = [ones(m, 1) X];
+Z2 = A1 * Theta1';
 A2 = [ones(m, 1) sigmoid(Z2)];
 Z3 = A2 * Theta2';
 A3 = sigmoid(Z3);
@@ -71,17 +71,19 @@ J = (1/m)*J + (lambda/(2*m)) * (sum(Theta1(:, 2:end)(:).^2) + sum(Theta2(:, 2:en
 %         Hint: We recommend implementing backpropagation using a for-loop
 %               over the training examples if you are implementing it for the 
 %               first time.
-D1=0;
-D2=0;
+D1=zeros(size(Theta1));
+D2=zeros(size(Theta2));
 for i=[1:m]
+  a1 = A1(i, :);
   z2 = Z2(i, :);
   a2 = A2(i, :);
   z3 = Z3(i, :);
   a3 = A3(i, :);
   d3 = a3 - y_logical;
   d2 = ((Theta2'*d3').*sigmoidGradient(a2'))';
-  D1 = D1 + a2*d2';
-  D2 = D2 + a3*d3';
+  d2 = d2(:, 2:end); 
+  D1 = D1 + d2'*a1;
+  D2 = D2 + d3'*a2;
 endfor
 
 
