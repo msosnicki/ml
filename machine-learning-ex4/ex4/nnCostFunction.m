@@ -74,6 +74,7 @@ J = (1/m)*J + (lambda/(2*m)) * (sum(Theta1(:, 2:end)(:).^2) + sum(Theta2(:, 2:en
 D1=zeros(size(Theta1));
 D2=zeros(size(Theta2));
 for i=[1:m]
+  y_logical = Y(i, :);
   a1 = A1(i, :);
   z2 = Z2(i, :);
   a2 = A2(i, :);
@@ -81,7 +82,7 @@ for i=[1:m]
   a3 = A3(i, :);
   d3 = a3 - y_logical;
   d2 = ((Theta2'*d3').*sigmoidGradient(a2'))';
-  d2 = d2(:, 2:end); 
+  d2 = d2(2:end); 
   D1 = D1 + d2'*a1;
   D2 = D2 + d3'*a2;
 endfor
